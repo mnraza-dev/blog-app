@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import { User } from "../models/users.models.js";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -33,7 +33,7 @@ export const register = async (req, res) => {
       expiresIn: "10d",
     });
 
-    res.json({ token });
+    res.json({ token, user });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
@@ -61,7 +61,7 @@ export const login = async (req, res) => {
       expiresIn: "10d",
     });
 
-    res.json({ token });
+    res.json({ token, user, message: "Login successful" });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }

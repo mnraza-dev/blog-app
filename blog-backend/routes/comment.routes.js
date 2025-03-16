@@ -4,6 +4,6 @@ import { createComment } from '../controllers/comment.controllers.js';
 
 const commentRoutes = express.Router();
 
-router.post('/:postId', auth, createComment);
+commentRoutes.post('/:postId', auth, createComment);
 
 export default commentRoutes;

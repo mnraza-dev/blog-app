@@ -8,8 +8,8 @@ import {
 
 const postsRoutes = express.Router();
 
-router.post("/", auth, createPost);
-router.get("/", getPosts);
-router.get("/:id", getPostById);
+postsRoutes.post("/", auth, createPost);
+postsRoutes.get("/", getPosts);
+postsRoutes.get("/:id", getPostById);
 
 export default postsRoutes;

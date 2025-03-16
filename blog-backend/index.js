@@ -1,20 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-
+import authRoutes from "./routes/auth.routes.js";
+import postRoutes from "./routes/posts.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 dotenv.config();
 const app = express();
-connectDB();
-app.use(express.json());
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hello World",
-  });
-});
 
-// app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/posts', require('./routes/posts'));
-// app.use('/api/comments', require('./routes/comments'));
+connectDB();
+
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
 
 const PORT = process.env.PORT || 5000;
 
