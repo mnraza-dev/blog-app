@@ -1,14 +1,19 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { User } from "../models/users.models.js";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-export const registerUser = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
+export const register = async (req, res) => {
   const { username, email, password } = req.body;
+
+  // Simple validation
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+  if (password.length < 6) {
+    return res
+      .status(400)
+      .json({ error: "Password must be at least 6 characters" });
+  }
 
   try {
     let user = await User.findOne({ email });
@@ -25,7 +30,7 @@ export const registerUser = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "10d",
     });
 
     res.json({ token });
@@ -34,8 +39,12 @@ export const registerUser = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -49,7 +58,7 @@ export const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "10d",
     });
 
     res.json({ token });
