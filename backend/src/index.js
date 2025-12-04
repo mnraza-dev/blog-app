@@ -12,8 +12,8 @@ app.get('/health-check', (req, res) => {
 });
 
 import userRouter from "./routes/user.routes.js";
+app.use('/users', userRouter);
 
-app.use('/users', userRouter)
 
 app.listen(PORT, () => {
     connectDB();
